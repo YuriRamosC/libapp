@@ -1,0 +1,15 @@
+/frontend/.DS_*
+/frontend/*.log
+/frontend/logs
+/frontend/**/*.backup.*
+/frontend/**/*.back.*
+
+/frontend/node_modules
+/backend/node_modules
+/frontend/bower_components
+
+/frontend/*.sublime*
+
+/frontend/psd
+/frontend/thumb
+/frontend/sketch

@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js --ignore *.marko.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yuri Ramos Canário Campos",
+  "license": "ISC",
+  "dependencies": {
+    "alert": "^5.0.6",
+    "async": "^3.2.0",
+    "axios": "^0.21.0",
+    "consign": "^0.1.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "https": "^1.0.0",
+    "marko": "^4.23.9",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.6",
+    "request": "^2.88.2"
+  }
+}
