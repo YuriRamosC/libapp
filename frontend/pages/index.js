@@ -12,7 +12,7 @@ export default function Home() {
   const router = useRouter();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-
+  const [token, setToken] = React.useState('');
   const handleInputEmail = (event) => {
     setEmail(event.target.value);
   }
@@ -32,6 +32,7 @@ export default function Home() {
     .then(res => {
      if (res.status === 204) {
        console.log('two: '+res.headers.get('Authorization'));
+       setToken(res.headers.get('Authorization'));
        //DAQUI
        //Guardar isso aqui no LocalStorage
       } else {
