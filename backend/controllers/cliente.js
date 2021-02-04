@@ -1,17 +1,18 @@
 const Cliente = require('../models/cliente');
+const middlewaresAutenticacao = require('./middlewares-auth');
 module.exports = app => {
-    app.get('/clientes', (req, res) => {
+    app.get('/clientes',middlewaresAutenticacao.bearer, (req, res) => {
         Cliente.lista(res, function (clientes) {
             res.status(200).json({ clientes: clientes });
         });
     })
-    app.get('/clientes/:id', (req, res) => {
+    app.get('/clientes/:id',middlewaresAutenticacao.bearer, (req, res) => {
         const id = parseInt(req.params.id);
         Cliente.buscaPorId(id, res, (cliente) => {
             res.status(200).json({ cliente: cliente });
         });
     })
-    app.post('/clientes', (req, res) => {
+    app.post('/clientes',middlewaresAutenticacao.bearer, (req, res) => {
         const cliente = req.body
 
         Cliente.adiciona(cliente, res, (result)=> {

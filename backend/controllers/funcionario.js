@@ -1,9 +1,10 @@
 const Funcionario = require('../models/funcionario');
 const passport = require('passport');
+const middlewaresAutenticacao = require('./middlewares-auth');
 module.exports = app => {
 
     app.route('/funcionarios/login')
-        .post(passport.authenticate('local', { session: false }), Funcionario.login.bind(Funcionario));
+        .post(middlewaresAutenticacao.local, Funcionario.login.bind(Funcionario));
 
 
     app.get('/funcionarios', passport.authenticate('bearer', {session: false }), (req, res) => {

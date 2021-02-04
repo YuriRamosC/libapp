@@ -1,18 +1,19 @@
 const Livro = require('../models/livro');
 const passport = require('passport');
+const middlewaresAutenticacao = require('./middlewares-auth');
 module.exports = app => {
-    app.get('/livros',passport.authenticate('bearer', {session: false}), (req, res) => {
+    app.get('/livros',middlewaresAutenticacao.bearer, (req, res) => {
         Livro.lista(res, function (livros) {
             res.status(200).json({ livros: livros });
         });
     })
-    app.get('/livros/:id', (req, res) => {
+    app.get('/livros/:id',middlewaresAutenticacao.bearer, (req, res) => {
         const id = parseInt(req.params.id);
         Livro.buscaPorId(id, res, (livro) => {
             res.status(200).json({ livro: livro });
         });
     })
-    app.post('/livros', (req, res) => {
+    app.post('/livros',middlewaresAutenticacao.bearer, (req, res) => {
         const livro = req.body
 
         Livro.adiciona(livro, res, (result)=> {
