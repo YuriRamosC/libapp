@@ -1,9 +1,14 @@
 import { useRouter } from 'next/router';
 
 
-export default function Funcionario() {
-    const router = useRouter();
-    console.log(router.query);
+export default function FuncionarioPage() {
+    return (
+        <FuncionarioHome 
+        funcionario={dbExterno.usuario}
+        />
+    )
+}
 
-    return ( <div>Funcionario </div>);
+export async function getServerSideProps(context) {
+    const nodezada = context
 }

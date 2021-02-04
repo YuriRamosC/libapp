@@ -11,6 +11,7 @@ class Funcionario {
     login(req, res) {
         try {
             const token = this.criaTokenJWT(req.user);
+            res.header('Access-Control-Expose-Headers', 'Authorization');
             res.set('Authorization', token);
             res.status(204).send();
         } catch (error) {

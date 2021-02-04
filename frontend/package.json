@@ -17,7 +17,12 @@
     "react-hooks-form": "^2.0.1",
     "react-is": "^16.8.0",
     "sqlite": "^4.0.19",
-    "styled-components": "^5.0.0"
+    "styled-components": "^5.0.0",
+    "axios": "^0.21.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.13",
+    "font-awesome": "^4.7.0"
   },
   "devDependencies": {
     "babel-plugin-styled-components": "^1.10.0"
