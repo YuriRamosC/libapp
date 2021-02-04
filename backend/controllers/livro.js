@@ -1,6 +1,7 @@
 const Livro = require('../models/livro');
+const passport = require('passport');
 module.exports = app => {
-    app.get('/livros', (req, res) => {
+    app.get('/livros',passport.authenticate('bearer', {session: false}), (req, res) => {
         Livro.lista(res, function (livros) {
             res.status(200).json({ livros: livros });
         });

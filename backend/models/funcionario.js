@@ -44,6 +44,20 @@ class Funcionario {
             }
         })
     }
+    //inside
+    verificarId(id) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM funcionario WHERE id = '${id}'`;
+            conexao.query(sql, (erro, resultados) => {
+                const funcionario = resultados[0];
+                if (erro) {
+                    return reject('Não foi possível encontrar o usuário!');
+                } else {
+                    return resolve(funcionario);
+                }
+            })
+        });
+    }
 
     buscaPorId(id, res, callback) {
         const sql = `SELECT * FROM funcionario WHERE id = ${id}`;

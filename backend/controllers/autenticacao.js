@@ -39,8 +39,15 @@ passport.use(
 
 passport.use(
     new BearerStrategy(
-        (token, done) => {
-            const payload = jwt.verify(token, process.env.CHAVE_JWT);
+        async (token, done) => {
+            try {
+                const payload = jwt.verify(token, process.env.CHAVE_JWT);
+                const funcionario = await Funcionario.verificarId(payload.id);
+                done(null, funcionario);
+            } catch(err) {
+                console.log('Deu ruim pae');
+                done(err);
+            }
         }
     )
 )

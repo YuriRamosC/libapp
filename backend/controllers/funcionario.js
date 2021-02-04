@@ -6,12 +6,12 @@ module.exports = app => {
         .post(passport.authenticate('local', { session: false }), Funcionario.login.bind(Funcionario));
 
 
-    app.get('/funcionarios', (req, res) => {
+    app.get('/funcionarios', passport.authenticate('bearer', {session: false }), (req, res) => {
         Funcionario.lista(res, function (funcionarios) {
             res.status(200).json({ funcionarios: funcionarios });
         });
     })
-    app.get('/funcionarios/:id', (req, res) => {
+    app.get('/funcionarios/:id', passport.authenticate('bearer', {session: false }), (req, res) => {
         const id = parseInt(req.params.id);
         Funcionario.buscaPorId(id, res, (livro) => {
             res.status(200).json({ livro: livro });
