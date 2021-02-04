@@ -1,3 +1,4 @@
+require('dotenv').config();
 const customExpress = require('./config/customExpress');
 const conexao = require('./infra/conexao');
 const Tabelas = require('./infra/tabelas');
