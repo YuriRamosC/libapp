@@ -3,6 +3,8 @@ import { } from '@material-ui/core'
 import MenuAppBar from '../components/MenuAppBar'
 import api from '../api';
 import { useRouter } from 'next/router'
+import Logged from './logged';
+import Comunicacao from '../communication';
 const Title = styled.h1`
   font-size: 50px;
   color: ${({ theme }) => theme.palette.primary.dark};
@@ -13,6 +15,7 @@ export default function Home() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [token, setToken] = React.useState('');
+  const communication = new Comunicacao();
   const handleInputEmail = (event) => {
     setEmail(event.target.value);
   }
@@ -21,29 +24,10 @@ export default function Home() {
   }
   const onSubmit = (event) => {
     event.preventDefault();
-    //encapsular isso aqui
-    fetch('http://192.168.100.66:3001/funcionarios/login', {
-      method: 'POST',
-      body: `email=${email}&password=${password}`,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'
-      }
-    })
-    .then(res => {
-     if (res.status === 204) {
-       console.log('two: '+res.headers.get('Authorization'));
-       setToken(res.headers.get('Authorization'));
-       //DAQUI
-       //Guardar isso aqui no LocalStorage
-      } else {
-        const error = new Error(res.error);
-        throw error;
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error logging in please try again');
-    });
+    communication.autenticar(email, password).then(res => {
+        localStorage.setItem('token', res);
+      });
+    router.push('/logged');
   }
   return (
     <div>

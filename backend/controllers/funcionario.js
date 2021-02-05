@@ -7,7 +7,9 @@ module.exports = app => {
         .post(middlewaresAutenticacao.local, Funcionario.login.bind(Funcionario));
 
 
-    app.get('/funcionarios', passport.authenticate('bearer', {session: false }), (req, res) => {
+    app.get('/funcionarios', middlewaresAutenticacao.bearer, (req, res) => {
+        console.log('aqui');
+        console.dir(res);
         Funcionario.lista(res, function (funcionarios) {
             res.status(200).json({ funcionarios: funcionarios });
         });
