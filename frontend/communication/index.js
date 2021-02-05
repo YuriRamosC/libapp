@@ -23,6 +23,7 @@ export default class Comunicacao {
                 alert('Error logging in please try again');
             });
     }
+
     bearerGET(token, path) {
         return new Promise(function (resolve, reject) {
             fetch(`http://192.168.100.66:3001${path} `, {

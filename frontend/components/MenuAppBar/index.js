@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,9 +19,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuAppBar() {
+export default function MenuAppBar({ funcionario }) {
   const classes = useStyles();
-
+  const [funcionarioLogado, setFuncionarioLogado] = React.useState({});
+  useEffect(()=> {
+    if(funcionario) {
+      setFuncionarioLogado(funcionario);
+    }
+  });
   return (
     <div className={classes.root}>
       <AppBar position="static" color='primary'>
@@ -32,7 +37,12 @@ export default function MenuAppBar() {
           <Typography variant="h6" className={classes.title}>
             LibApp
           </Typography>
-          <Button color="inherit">Login</Button>
+          {!funcionario && <Button color="inherit">Login</Button>}
+          {funcionario && (
+            <Typography variant="h6" start='end' className={classes.title}>
+            Seja bem vindo, {funcionario.nome}
+          </Typography>
+          )}
         </Toolbar>
       </AppBar>
     </div>

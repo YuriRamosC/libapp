@@ -7,12 +7,8 @@ module.exports = app => {
         .post(middlewaresAutenticacao.local, Funcionario.login.bind(Funcionario));
 
 
-    app.get('/funcionarios', middlewaresAutenticacao.bearer, (req, res) => {
-        console.log('aqui');
-        console.dir(res);
-        Funcionario.lista(res, function (funcionarios) {
-            res.status(200).json({ funcionarios: funcionarios });
-        });
+    app.get('/profile', middlewaresAutenticacao.bearer, (req, res) => {
+        res.status(200).json(req.user);
     })
     app.get('/funcionarios/:id', passport.authenticate('bearer', {session: false }), (req, res) => {
         const id = parseInt(req.params.id);
@@ -21,13 +17,13 @@ module.exports = app => {
         });
     })
     app.post('/funcionarios', (req, res) => {
-        const livro = req.body
+        const funcionario = req.body
 
-        Funcionario.adiciona(livro, res, (result) => {
+        Funcionario.adiciona(funcionario, res, (result) => {
             if (result.sqlState === '23000') {
-                res.status(400).json({ 'error': 'Não foi possível adicionar o livro!' });
+                res.status(400).json({ 'error': 'Não foi possível adicionar o funcionario!' });
             } else {
-                res.status(201).json({ 'mensagem': 'Livro adicionado com sucesso!' });
+                res.status(201).json({ 'mensagem': 'Funcionario adicionado com sucesso!' });
             }
         });
     });

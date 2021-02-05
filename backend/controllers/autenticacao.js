@@ -41,7 +41,6 @@ passport.use(
     new BearerStrategy(
         async (token, done) => {
             try {
-                console.log(token);
                 const payload = jwt.verify(token, process.env.CHAVE_JWT);
                 const funcionario = await Funcionario.verificarId(payload.id);
                 done(null, funcionario);

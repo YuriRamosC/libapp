@@ -12,31 +12,27 @@ const Title = styled.h1`
 
 export default function Logged() {
   const router = useRouter();
-  const [token, setToken] = React.useState('');
+  //const [token, setToken] = React.useState('');
   const [funcionarioLogado, setFuncionarioLogado] = React.useState([]);
   const [listaFuncionarios, setListaFuncionarios] = React.useState([]);
   const [listaLivros, setListaLivros] = React.useState([]);
   const communication = new Comunicacao();
   useEffect(() => {
-    var newToken = localStorage.token;
-    setToken(newToken);
+    communication.bearerGET(localStorage.token, '/profile')
+    .then((values => {
+      console.log(values);
+      setFuncionarioLogado(values);
+    }))
 
+    communication.bearerGET(localStorage.token, '/livros')
+    .then((values) => {
+      setListaLivros(values.livros);
+    })
   }, []);
-
-  const updateLivros = (event) => {
-    event.preventDefault();
-    communication.bearerGET(token, '/livros')
-      .then((values) => {
-        console.dir(values.livros);
-        setListaLivros(values.livros);
-      })
-  }
-
   return (
     <div>
-      <MenuAppBar />
-      <Button color='primary' onClick={updateLivros}>Atualizar Livros</Button>
-      <TableContainer component={Paper} style={{align: 'center', height: 400, width: '100%' }}>
+      <MenuAppBar funcionario={funcionarioLogado}/>
+      <TableContainer component={Paper} style={{ align: 'center', height: 400, width: '100%' }}>
         <Table size='small' aria-label='a dense table'>
           <TableHead>
             <TableRow>
