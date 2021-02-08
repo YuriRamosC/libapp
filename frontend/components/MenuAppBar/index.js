@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import { Toolbar, Typography, Button, IconButton, InputAdornment, InputLabel } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuAppBar({ funcionario }) {
+export default function MenuAppBar({ funcionario, listarLivros, listarClientes }) {
   const classes = useStyles();
   const [funcionarioLogado, setFuncionarioLogado] = React.useState({});
-  useEffect(()=> {
-    if(funcionario) {
+  useEffect(() => {
+    if (funcionario) {
       setFuncionarioLogado(funcionario);
     }
   });
@@ -37,11 +35,13 @@ export default function MenuAppBar({ funcionario }) {
           <Typography variant="h6" className={classes.title}>
             LibApp
           </Typography>
-          {!funcionario && <Button color="inherit">Login</Button>}
+          {funcionario && ( <Typography variant="h6" className={classes.title}> Seja bem vindo, {funcionario.nome}</Typography>)}
+          {!funcionario && <Button color="inherit" href='/'>Login</Button>}
           {funcionario && (
-            <Typography variant="h6" start='end' className={classes.title}>
-            Seja bem vindo, {funcionario.nome}
-          </Typography>
+            <div>
+              <Button color='inherit' onClick={listarLivros}>Livros</Button>
+              <Button color='inherit' onClick={listarClientes}>Clientes</Button>
+            </div>
           )}
         </Toolbar>
       </AppBar>
