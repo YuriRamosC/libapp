@@ -11,7 +11,6 @@ export default class Comunicacao {
         })
             .then(res => {
                 if (res.ok) {
-                    const retorninho = res.headers.get('Authorization');
                     return retorninho;
                 } else {
                     const error = new Error(res.error);
@@ -36,7 +35,6 @@ export default class Comunicacao {
                .then(function (res) {
                     if (res.ok) {
                         res.json().then(function (result) {
-                            console.log('Comms: ' + result);
                             resolve(result);
                         });
                     } else {
@@ -59,7 +57,7 @@ export default class Comunicacao {
         })
             .then(res => {
                 if (res.ok) {
-                    console.log(res);
+
                 } else {
                     const error = new Error(res.error);
                     throw error;

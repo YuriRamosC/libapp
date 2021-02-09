@@ -29,7 +29,6 @@ const theme = createMuiTheme({
 });
 
 export default function App({ Component, pageProps }) {
-  console.log(theme.palette);
   return (
     <>
       <GlobalStyle />
