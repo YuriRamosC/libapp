@@ -11,7 +11,6 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import theme from '../theme'
 const stylesLogin = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
