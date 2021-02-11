@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components'
 import { Button, DataGrid, Container, TableCell, TableBody, TableContainer, TableHead, Typography, TableRow, Table, Paper, TextField } from '@material-ui/core'
 import { withStyles, makeStyles } from '@material-ui/core/styles'
-import { Autocomplete } from '@material-ui/lab';
 import MenuAppBar from '../components/MenuAppBar'
-import api from '../api';
 import moment from 'moment';
 import { useRouter } from 'next/router'
 import Comunicacao from '../communication/api';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import NovoEmprestimo from '../components/crud/NovoEmprestimo';
-import NovoLivro from '../components/crud/NovoLivro';
-import NovoCliente from '../components/crud/NovoCliente';
-import Devolucao from '../components/Devolucao';
+import NovoEmprestimo from '../components/crud/emprestimos/NovoEmprestimo';
+import TabelaEmprestimos from '../components/crud/emprestimos/TabelaEmprestimos';
+import NovoLivro from '../components/crud/livros/NovoLivro';
+import TabelaLivros from '../components/crud/livros/TabelaLivros';
+import NovoCliente from '../components/crud/clientes/NovoCliente';
+import TabelaClientes from '../components/crud/clientes/TabelaClientes';
 const screenStates = {
   LIVROS: 'LIVROS',
   CLIENTES: 'CLIENTES',
@@ -108,11 +105,7 @@ export default function Logged() {
                     '/emprestimosUpdate',
                     JSON.stringify({
                       id: emprestimo.id,
-                      cliente_id: emprestimo.cliente_id,
-                      livro_id: emprestimo.livro_id,
-                      dataEntrega: emprestimo.dataEntrega,
                       isNotified: 1,
-                      devolvido: emprestimo.devolvido
                     }));
                 });
               }
@@ -122,14 +115,9 @@ export default function Logged() {
             '/clientesUpdate',
             JSON.stringify({
               id: cliente.id,
-              nome: cliente.nome,
-              cpf: cliente.cpf,
-              email: cliente.email,
               multa: multaTotal,
-              telefone: cliente.telefone,
-              endereco: cliente.endereco
             }))
-            .then(retorno => console.log(retorno));
+            .then(retorno => console.log('ok'));
         });
       });
   }, [screenState]);
@@ -154,146 +142,30 @@ export default function Logged() {
   function handleNovoCliente() {
     setScreenState(screenStates.NOVOCLIENTE);
   }
-  function devolucao() {
-    console.log('devolucao');
-  }
-  return (
-    <div>
-      <MenuAppBar funcionario={funcionarioLogado} novoEmprestimo={novoEmprestimo} devolucao={devolucao} listarLivros={listarLivros} listarClientes={listarClientes} listarEmprestimos={listarEmprestimos} />
-      <Container maxWidth='md'>
-        {screenState === screenStates.LIVROS && <TabelaLivros listaLivros={listaLivros} handleNovoLivro={handleNovoLivro} setScreenState={setScreenState} screenStates={screenStates} />}
-        {screenState === screenStates.CLIENTES && <TabelaClientes listaClientes={listaClientes} handleNovoCliente={handleNovoCliente} setScreenState={setScreenState} screenStates={screenStates} />}
-        {screenState === screenStates.EMPRESTIMOS && <TabelaEmprestimos devolucao={devolucao} listaEmprestimos={emprestimos} listaClientes={listaClientes} listaLivros={listaLivros} />}
-        {screenState === screenStates.NOVOEMPRESTIMO && <NovoEmprestimo setScreenState={setScreenState} screenStates={screenStates} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication} />}
-        {screenState === screenStates.NOVOLIVRO && <NovoLivro listaLivros={listaLivros} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
-        {screenState === screenStates.NOVOCLIENTE && <NovoCliente listaClientes={listaClientes} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
-      </Container>
-    </div>
-  )
-}
-
-function TabelaEmprestimos({ listaEmprestimos, listaClientes, listaLivros, devolucao }) {
-  return (
-    <TableContainer component={Paper} style={{ align: 'center' }} size='medium'>
-      <Table stickyHeader size='medium' aria-label='a dense table'>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Editar</StyledTableCell>
-            <StyledTableCell>Deletar</StyledTableCell>
-            <StyledTableCell>Status</StyledTableCell>
-            <StyledTableCell>Cliente</StyledTableCell>
-            <StyledTableCell>Email</StyledTableCell>
-            <StyledTableCell>Livro</StyledTableCell>
-            <StyledTableCell>ISBN</StyledTableCell>
-            <StyledTableCell>Entrega</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {listaEmprestimos.map((emprestimo, index) => {
-            return (
-              <TableRow key={`emprestimo_${index}`}>
-                <StyledTableCell align='center' padding='checkbox'>
-                  <EditIcon color="action" />
-                </StyledTableCell>
-                <StyledTableCell align='center' padding='checkbox'>
-                  <DeleteForeverIcon color='error' />
-                </StyledTableCell>
-                {emprestimo.devolvido === 1 && <StyledTableCell>Devolvido</StyledTableCell>}
-                {emprestimo.devolvido === 0 && <StyledTableCell><Devolucao devolucao={devolucao}/></StyledTableCell>}
-                <TableCell align='center'>{listaClientes.find((obj) => { return obj.id === emprestimo.cliente_id }).nome}</TableCell>
-                <TableCell>{listaClientes.find((obj) => { return obj.id === emprestimo.cliente_id }).email}</TableCell>
-                <TableCell>{listaLivros.find((obj) => { return obj.id === emprestimo.livro_id }).nome}</TableCell>
-                <TableCell>{listaLivros.find((obj) => { return obj.id === emprestimo.livro_id }).isbn}</TableCell>
-                <TableCell>{emprestimo.dataEntrega.replace('T02:00:00.000Z', '')}</TableCell>
-              </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  )
-}
-
-function TabelaLivros({ listaLivros, handleNovoLivro, setScreenState, screenStates }) {
-  const classes = stylesBase();
-  return (
-    <div align='center'>
-      <Button onClick={handleNovoLivro} margin='normal' className={classes.submit} align='center' variant="contained" color="action">Adicionar livro</Button>
-      <TableContainer component={Paper} style={{ align: 'center' }} size='small' maxWidth='lg'>
-        <Table stickyHeader size='small' aria-label='a dense table'>
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Editar</StyledTableCell>
-              <StyledTableCell>Deletar</StyledTableCell>
-              <StyledTableCell>ISBN</StyledTableCell>
-              <StyledTableCell>Nome</StyledTableCell>
-              <StyledTableCell>Autor</StyledTableCell>
-              <StyledTableCell>Editora</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {listaLivros.map((livro, index) => {
-              return (
-                <TableRow key={`livro_${index}`}>
-                  <StyledTableCell padding='checkbox'>
-                    <EditIcon color="action" />
-                  </StyledTableCell>
-                  <StyledTableCell padding='checkbox'>
-                    <DeleteForeverIcon color='error' />
-                  </StyledTableCell>
-                  <TableCell>{livro.isbn}</TableCell>
-                  <TableCell >{livro.nome}</TableCell >
-                  <TableCell >{livro.autor}</TableCell >
-                  <TableCell>{livro.editora}</TableCell>
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
-  )
-}
-
-function TabelaClientes({ listaClientes, handleNovoCliente, setScreenState, screenStates }) {
-  const classes = stylesBase();
-  return (
-    <div align='center'>
-      <Button onClick={handleNovoCliente} className={classes.submit} margin='normal' align='center' variant="contained" color="action">Adicionar cliente</Button>
-      <TableContainer component={Paper} style={{ align: 'center' }} size='small' maxWidth='lg'>
-        <Table stickyHeader size='small' aria-label='a dense table'>
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align='center'>Editar</StyledTableCell>
-              <StyledTableCell align='center'>Deletar</StyledTableCell>
-              <StyledTableCell>Nome</StyledTableCell>
-              <StyledTableCell align="right" >CPF</StyledTableCell>
-              <StyledTableCell align="right" >Email</StyledTableCell>
-              <StyledTableCell align="right" >Telefone</StyledTableCell>
-              <StyledTableCell align="right" >Multa</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {listaClientes.map((cliente, index) => {
-              return (
-                <TableRow key={`cliente_${index}`}>
-                  <StyledTableCell align="center" padding='checkbox'>
-                    <EditIcon color="action" />
-                  </StyledTableCell>
-                  <StyledTableCell align="center" padding='checkbox'>
-                    <DeleteForeverIcon color='error' />
-                  </StyledTableCell>
-                  <TableCell >{cliente.nome}</TableCell >
-                  <TableCell align="right">{cliente.cpf}</TableCell >
-                  <TableCell align="right">{cliente.email}</TableCell>
-                  <TableCell align="right">{cliente.telefone}</TableCell>
-                  <TableCell align="right">{cliente.multa}</TableCell>
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
-  )
+  function devolucao(emprestimo) {
+    communication.bearerPOST(localStorage.token,
+      '/emprestimosUpdate',
+      JSON.stringify({
+        id: emprestimo.id,
+        cliente_id: emprestimo.cliente_id,
+        livro_id: emprestimo.livro_id,
+        dataEntrega: emprestimo.dataEntrega,
+        isNotified: emprestimo.isNotified,
+        devolvido: 1
+      }))
+      .then(retorno => console.log(retorno));
+  };
+return (
+  <div>
+    <MenuAppBar funcionario={funcionarioLogado} novoEmprestimo={novoEmprestimo} devolucao={devolucao} listarLivros={listarLivros} listarClientes={listarClientes} listarEmprestimos={listarEmprestimos} />
+    <Container maxWidth='md'>
+      {screenState === screenStates.LIVROS && <TabelaLivros listaLivros={listaLivros} handleNovoLivro={handleNovoLivro} setScreenState={setScreenState} screenStates={screenStates}  communication={communication}/>}
+      {screenState === screenStates.CLIENTES && <TabelaClientes listaClientes={listaClientes} handleNovoCliente={handleNovoCliente} setScreenState={setScreenState} screenStates={screenStates} communication={communication} />}
+      {screenState === screenStates.EMPRESTIMOS && <TabelaEmprestimos devolucao={devolucao} listaEmprestimos={emprestimos} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication}/>}
+      {screenState === screenStates.NOVOEMPRESTIMO && <NovoEmprestimo setScreenState={setScreenState} screenStates={screenStates} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication} />}
+      {screenState === screenStates.NOVOLIVRO && <NovoLivro listaLivros={listaLivros} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
+      {screenState === screenStates.NOVOCLIENTE && <NovoCliente listaClientes={listaClientes} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
+    </Container>
+  </div>
+)
 }

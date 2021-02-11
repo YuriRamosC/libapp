@@ -13,6 +13,26 @@ module.exports = app => {
             res.status(200).json({ livro: livro });
         });
     })
+    app.post('/livrosUpdate', middlewaresAutenticacao.bearer, (req, res) => {
+        const livro = req.body
+        Livro.altera(livro.id, livro, res, (result) => {
+            if (result.sqlState === '23000') {
+                res.status(400).json({ 'error': 'Não foi possível alterar o livro!', 'json': `${result}` });
+            } else {
+                res.status(201).json({ 'mensagem': 'livro alterado com sucesso!', 'json': `${result}` });
+            }
+        });
+    });
+    app.post('/livrosDelete', middlewaresAutenticacao.bearer, (req, res) => {
+        const livro = req.body
+        Livro.deleta(livro.id, res, (result) => {
+            if (result.sqlState === '23000') {
+                res.status(400).json({ 'error': 'Não foi possível deletar o livro!', 'json': `${result}` });
+            } else {
+                res.status(201).json({ 'mensagem': 'livro deletado com sucesso!', 'json': `${result}` });
+            }
+        });
+    });
     app.post('/livros',middlewaresAutenticacao.bearer, (req, res) => {
         const livro = req.body
 

@@ -102,16 +102,16 @@ export default function NovoCliente({ listaClientes, communication, setScreenSta
             <TextField align='center'
               id='cpf'
               label='CPF'
-              value={cpf}
+              className={classes.textfield}
               variant="outlined"
               margin='normal'
               autoFocus
+              value={cpf}
               onChange={handleCpf}
-              className={classes.textfield}
               fullWidth
+              style={{ width: 300 }}
               helperText={erros.cpf.text}
               error={!erros.cpf.valid}
-              style={{ width: 300 }}
               InputLabelProps={{
                 shrink: true,
               }}

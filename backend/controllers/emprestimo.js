@@ -43,9 +43,9 @@ module.exports = app => {
             res.status(200).json({emprestimos: emprestimos});
         });
     });*/
-    app.get('/emprestimos-por-livro/:id',middlewaresAutenticacao.bearer, (req, res) => {
+    app.get('/emprestimos-por-emprestimo/:id',middlewaresAutenticacao.bearer, (req, res) => {
         const id = parseInt(req.params.id);
-        Emprestimo.buscaPorIdLivro(id, res, (emprestimo) => {
+        Emprestimo.buscaPorIdEmprestimo(id, res, (emprestimo) => {
             res.status(200).json({ emprestimo: emprestimo });
         });
     })
@@ -60,6 +60,16 @@ module.exports = app => {
             } else {
                 console.log('deu bom');
                 res.status(201).json({'mensagem': 'Emprestimo adicionado com sucesso!'});
+            }
+        });
+    });
+    app.post('/emprestimosDelete', middlewaresAutenticacao.bearer, (req, res) => {
+        const emprestimo = req.body
+        Emprestimo.deleta(emprestimo.id, res, (result) => {
+            if (result.sqlState === '23000') {
+                res.status(400).json({ 'error': 'Não foi possível deletar o emprestimo!', 'json': `${result}` });
+            } else {
+                res.status(201).json({ 'mensagem': 'emprestimo deletado com sucesso!', 'json': `${result}` });
             }
         });
     });

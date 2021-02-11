@@ -16,6 +16,26 @@ module.exports = app => {
             res.status(200).json({ livro: livro });
         });
     })
+    app.post('/funcionariosUpdate', middlewaresAutenticacao.bearer, (req, res) => {
+        const funcionario = req.body
+        Funcionario.altera(funcionario.id, funcionario, res, (result) => {
+            if (result.sqlState === '23000') {
+                res.status(400).json({ 'error': 'Não foi possível alterar o funcionario!', 'json': `${result}` });
+            } else {
+                res.status(201).json({ 'mensagem': 'funcionario alterado com sucesso!', 'json': `${result}` });
+            }
+        });
+    });
+    app.post('/funcionariosDelete', middlewaresAutenticacao.bearer, (req, res) => {
+        const funcionario = req.body
+        Funcionario.deleta(funcionario.id, res, (result) => {
+            if (result.sqlState === '23000') {
+                res.status(400).json({ 'error': 'Não foi possível deletar o funcionario!', 'json': `${result}` });
+            } else {
+                res.status(201).json({ 'mensagem': 'funcionario deletado com sucesso!', 'json': `${result}` });
+            }
+        });
+    });
     app.post('/funcionarios', (req, res) => {
         const funcionario = req.body
 

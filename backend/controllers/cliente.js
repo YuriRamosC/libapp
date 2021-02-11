@@ -22,6 +22,16 @@ module.exports = app => {
             }
         });
     });
+    app.post('/clientesDelete', middlewaresAutenticacao.bearer, (req, res) => {
+        const cliente = req.body
+        Cliente.deleta(cliente.id, res, (result) => {
+            if (result.sqlState === '23000') {
+                res.status(400).json({ 'error': 'Não foi possível deletar o cliente!', 'json': `${result}` });
+            } else {
+                res.status(201).json({ 'mensagem': 'cliente deletado com sucesso!', 'json': `${result}` });
+            }
+        });
+    });
     app.post('/clientes', middlewaresAutenticacao.bearer, (req, res) => {
         const cliente = req.body
         Cliente.adiciona(cliente, res, (result) => {

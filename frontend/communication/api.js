@@ -42,7 +42,7 @@ export default class Comunicacao {
                         throw error;
                     }
                 }).catch(err => {
-                    alert(err);
+                    alert('Alguma coisa deu errado!');
                 });
         });
     }
@@ -63,7 +63,7 @@ export default class Comunicacao {
                     throw error;
                 }
             }).catch(err => {
-                alert(err);
+                return err;
             });
     }
 
