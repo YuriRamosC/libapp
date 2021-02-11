@@ -3,7 +3,7 @@ import MenuAppBar from '../components/MenuAppBar'
 import api from '../api';
 import { useRouter } from 'next/router'
 import Logged from './logged';
-import Comunicacao from '../communication';
+import Comunicacao from '../communication/api';
 import {
   makeStyles, Avatar, Toolbar, Typography, Container,
   Button, IconButton, InputAdornment, InputLabel, Input, Grid, TextField, Paper
@@ -47,8 +47,10 @@ export default function Home() {
     event.preventDefault();
     communication.autenticar(email, password).then(res => {
       localStorage.setItem('token', res);
-    });
-    router.push('/logged');
+      router.push('/logged');
+    }).catch(err => {
+      router.push('/');
+    })
   }
   return (
     <div>

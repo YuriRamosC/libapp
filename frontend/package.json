@@ -15,6 +15,7 @@
     "@material-ui/lab": "^4.0.0-alpha.57",
     "axios": "^0.21.0",
     "font-awesome": "^4.7.0",
+    "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "next": "latest",
     "next-auth": "^3.2.0",
@@ -22,6 +23,7 @@
     "react-dom": "^16.8.0",
     "react-hooks-form": "^2.0.1",
     "react-is": "^16.8.0",
+    "react-moment": "^1.1.1",
     "sqlite": "^4.0.19",
     "styled-components": "^5.0.0"
   },

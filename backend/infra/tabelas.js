@@ -1,21 +1,20 @@
 class Tabelas {
     init(conexao) {
         this.conexao = conexao;
-        this.inserirLivros('Call of Cthullhu', 39.99, 'H.P. Lovecraft', 1950, 'Tentaculos', '123-01239213');
-        this.inserirLivros('Nas Montanhas da Loucura', 29.99, 'H.P. Lovecraft', 1962, 'Tentaculos', '123-01099013');
+        this.inserirLivros('Call of Cthullhu', 'H.P. Lovecraft', 1950, 'Tentaculos', '123-01239213');
+        this.inserirLivros('Nas Montanhas da Loucura', 'H.P. Lovecraft', 1962, 'Tentaculos', '123-01099013');
         console.log("Tabelas populadas");
     }
 
-    inserirLivros(nome, preco, autor, ano_pub, editora, isbn) {
+    inserirLivros(nome, autor, ano_pub, editora, isbn) {
         const sql = `
         INSERT INTO livro (
             nome,
-            preco,
             autor,
             ano_pub,
             editora,
             isbn
-        ) SELECT '${nome}', ${preco}, '${autor}',${ano_pub},'${editora}', '${isbn}' WHERE NOT EXISTS (SELECT * FROM livro WHERE isbn LIKE '${isbn}')`;
+        ) SELECT '${nome}', '${autor}',${ano_pub},'${editora}', '${isbn}' WHERE NOT EXISTS (SELECT * FROM livro WHERE isbn LIKE '${isbn}')`;
 
         this.conexao.query(sql, erro => {
             if (erro) {

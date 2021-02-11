@@ -45,7 +45,7 @@ passport.use(
                 const funcionario = await Funcionario.verificarId(payload.id);
                 done(null, funcionario);
             } catch(err) {
-                console.log('Deu ruim pae');
+                console.log(err);
                 done(err);
             }
         }

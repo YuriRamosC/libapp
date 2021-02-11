@@ -1,5 +1,6 @@
 const Emprestimo = require('../models/emprestimo');
 const passport = require('passport');
+const nodemailer = require('nodemailer');
 const middlewaresAutenticacao = require('./middlewares-auth');
 module.exports = app => {
     app.get('/emprestimos',middlewaresAutenticacao.bearer, (req, res) => {
@@ -13,6 +14,35 @@ module.exports = app => {
             res.status(200).json({ emprestimo: emprestimo });
         });
     })
+    app.post('/notificarEntrega', middlewaresAutenticacao.bearer, (req, res) => {
+        const email = req.body;
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            auth: {
+                user: 'emaildetesteyuraso@gmail.com',
+                pass: 'emaildetestes123'
+            },
+        });
+        const mailOptions = {
+            from: 'emaildetesteyuraso@gmail.com',
+            to: email.remetente,
+            subject: email.assunto,
+            text: email.mensagem
+        }
+        transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+              return console.log(err)
+            }
+            res.status(200).json({'retorno':info});
+          })
+    })
+   /* app.get('/atualizarmultas', middlewaresAutenticacao.bearer, (req, res) => {
+        Emprestimo.atualizarMultas(res, function (emprestimos) {
+            res.status(200).json({emprestimos: emprestimos});
+        });
+    });*/
     app.get('/emprestimos-por-livro/:id',middlewaresAutenticacao.bearer, (req, res) => {
         const id = parseInt(req.params.id);
         Emprestimo.buscaPorIdLivro(id, res, (emprestimo) => {
@@ -20,13 +50,26 @@ module.exports = app => {
         });
     })
     app.post('/emprestimos',middlewaresAutenticacao.bearer, (req, res) => {
+        console.log('aqui');
+        console.log(req.body);
         const emprestimo = req.body
-
         Emprestimo.adiciona(emprestimo, res, (result)=> {
             if(result.sqlState === '23000') {
+                console.log('errou');
                 res.status(400).json({'error': 'Não foi possível adicionar o emprestimo!'});
             } else {
+                console.log('deu bom');
                 res.status(201).json({'mensagem': 'Emprestimo adicionado com sucesso!'});
+            }
+        });
+    });
+    app.post('/emprestimosUpdate', middlewaresAutenticacao.bearer, (req, res) => {
+        const emprestimo = req.body
+        Emprestimo.altera(emprestimo.id, emprestimo, res, (result) => {
+            if (result.sqlState === '23000') {
+                res.status(400).json({ 'error': 'Não foi possível alterar o emprestimo!', 'json': `${result}` });
+            } else {
+                res.status(201).json({ 'mensagem': 'emprestimo alterado com sucesso!', 'json': `${result}` });
             }
         });
     });

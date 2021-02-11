@@ -40,8 +40,8 @@ class Cliente {
         })
     }
 
-    alteraApi(id, valores, res, callback) {
-        const sql = 'UPDATE clientes SET ? WHERE id=?';
+    altera(id, valores, res, callback) {
+        const sql = 'UPDATE cliente SET ? WHERE id=?';
         var clienteTest = [];
         this.buscaPorId(id, res, function (cliente) {
             clienteTest = cliente;

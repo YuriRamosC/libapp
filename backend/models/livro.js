@@ -40,7 +40,7 @@ class Livro {
     }
 
     altera(id, valores, res, callback) {
-        const sql = 'UPDATE livros SET ? WHERE id=?';
+        const sql = 'UPDATE livro SET ? WHERE id=?';
         var livroTest = [];
         this.buscaPorId(id, res, function (livro) {
             livroTest = livro;

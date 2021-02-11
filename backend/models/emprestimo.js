@@ -26,6 +26,17 @@ class Emprestimo {
             }
         })
     }
+    buscaPorId(id, res, callback) {
+        const sql = `SELECT * FROM cliente_has_livro WHERE id = ${id}`;
+        conexao.query(sql, (erro, resultados) => {
+            const emprestimo = resultados[0];
+            if (erro) {
+                res.status(400).json(erro);
+            } else {
+                callback(emprestimo);
+            }
+        })
+    }
 
     buscaPorIdCliente(id, res, callback) {
         const sql = `SELECT * FROM cliente_has_livro WHERE cliente_id = ${id}`;
@@ -50,7 +61,7 @@ class Emprestimo {
         })
     }
     altera(id, valores, res, callback) {
-        const sql = 'UPDATE cliente_has_livros SET ? WHERE id=?';
+        const sql = 'UPDATE cliente_has_livro SET ? WHERE id=?';
         var emprestimoTest = [];
         this.buscaPorId(id, res, function (emprestimo) {
             emprestimoTest = emprestimo;

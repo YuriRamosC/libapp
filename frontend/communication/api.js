@@ -11,6 +11,7 @@ export default class Comunicacao {
         })
             .then(res => {
                 if (res.ok) {
+                    const retorninho = res.headers.get('Authorization');
                     return retorninho;
                 } else {
                     const error = new Error(res.error);
@@ -18,8 +19,7 @@ export default class Comunicacao {
                 }
             })
             .catch(err => {
-                console.error(err);
-                alert('Error logging in please try again');
+                alert('Erro ao logar, porfavor, tente novamente');
             });
     }
 
