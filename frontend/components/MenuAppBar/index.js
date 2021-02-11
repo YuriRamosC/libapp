@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuAppBar({ funcionario, listarLivros, listarClientes, listarEmprestimos, novoEmprestimo }) {
+export default function MenuAppBar({ funcionario, listarLivros, listarClientes, listarEmprestimos, novoEmprestimo, listarFuncionarios }) {
   const classes = useStyles();
   const [funcionarioLogado, setFuncionarioLogado] = React.useState({});
   useEffect(() => {
@@ -43,6 +43,7 @@ export default function MenuAppBar({ funcionario, listarLivros, listarClientes, 
               <Button color='inherit' onClick={listarEmprestimos}>Empréstimos</Button>
               <Button color='inherit' onClick={listarLivros}>Livros</Button>
               <Button color='inherit' onClick={listarClientes}>Clientes</Button>
+              {funcionarioLogado.isAdmin === 1 && <Button color='inherit' onClick={listarFuncionarios}>Funcionarios</Button>}
             </div>
           )}
         </Toolbar>

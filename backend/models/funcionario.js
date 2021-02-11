@@ -95,7 +95,7 @@ class Funcionario {
         })
     }
     altera(id, valores, res, callback) {
-        const sql = 'UPDATE funcionarios SET ? WHERE id=?';
+        const sql = 'UPDATE funcionario SET ? WHERE id=?';
         var funcionarioTest = [];
         this.buscaPorId(id, res, function (funcionario) {
             funcionarioTest = funcionario;

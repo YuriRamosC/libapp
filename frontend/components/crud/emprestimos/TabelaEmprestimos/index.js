@@ -4,6 +4,7 @@ import { withStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Devolucao from '../../../Devolucao';
+import DeletarEmprestimo from '../DeletarEmprestimo';
 const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: theme.palette.secondary.main,
@@ -36,7 +37,7 @@ const StyledTableCell = withStyles((theme) => ({
       margin: theme.spacing(3, 0, 2),
     },
   }));
-export default function TabelaEmprestimos({ listaEmprestimos, listaClientes, listaLivros, devolucao }) {
+export default function TabelaEmprestimos({ listaEmprestimos, listaClientes, listaLivros, devolucao, communication }) {
     return (
       <TableContainer component={Paper} style={{ align: 'center' }} size='medium'>
         <Table stickyHeader size='medium' aria-label='a dense table'>
@@ -56,7 +57,7 @@ export default function TabelaEmprestimos({ listaEmprestimos, listaClientes, lis
               return (
                 <TableRow key={`emprestimo_${index}`}>
                   <StyledTableCell align='center' padding='checkbox'>
-                    <DeleteForeverIcon color='error' />
+                    <DeletarEmprestimo emprestimo={emprestimo} communication={communication} />
                   </StyledTableCell>
                   {emprestimo.devolvido === 1 && <StyledTableCell>Devolvido</StyledTableCell>}
                   {emprestimo.devolvido === 0 && <StyledTableCell><Devolucao devolucao={devolucao} emprestimo={emprestimo}/></StyledTableCell>}

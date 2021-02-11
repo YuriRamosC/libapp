@@ -6,7 +6,11 @@ module.exports = app => {
     app.route('/funcionarios/login')
         .post(middlewaresAutenticacao.local, Funcionario.login.bind(Funcionario));
 
-
+        app.get('/funcionarios', middlewaresAutenticacao.bearer, (req, res) => {
+            Funcionario.lista(res, function (funcionarios) {
+                res.status(200).json({ funcionarios: funcionarios });
+            });
+        })
     app.get('/profile', middlewaresAutenticacao.bearer, (req, res) => {
         res.status(200).json(req.user);
     })

@@ -11,6 +11,8 @@ import NovoLivro from '../components/crud/livros/NovoLivro';
 import TabelaLivros from '../components/crud/livros/TabelaLivros';
 import NovoCliente from '../components/crud/clientes/NovoCliente';
 import TabelaClientes from '../components/crud/clientes/TabelaClientes';
+import TabelaFuncionarios from '../components/crud/funcionarios/TabelaFuncionarios';
+import NovoFuncionario from '../components/crud/funcionarios/NovoFuncionario';
 const screenStates = {
   LIVROS: 'LIVROS',
   CLIENTES: 'CLIENTES',
@@ -19,7 +21,8 @@ const screenStates = {
   NOVOEMPRESTIMO: 'NOVOEMPRESTIMO',
   NOVOLIVRO: 'NOVOLIVRO',
   NOVOCLIENTE: 'NOVOCLIENTE',
-  DEFAULT: 'DEFAULT'
+  FUNCIONARIOS: 'FUNCIONARIOS',
+  NOVOFUNCIONARIO: 'NOVOFUNCIONARIO'
 }
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -57,11 +60,18 @@ export default function Logged() {
   const [screenState, setScreenState] = React.useState(screenStates.EMPRESTIMOS);
   const router = useRouter();
   const [funcionarioLogado, setFuncionarioLogado] = React.useState([]);
+  const [listaFuncionarios, setListaFuncionarios] = React.useState([]);
   const [listaLivros, setListaLivros] = React.useState([]);
   const [listaClientes, setListaClientes] = React.useState([]);
   const [emprestimos, setEmprestimos] = React.useState([]);
   const communication = new Comunicacao();
   useEffect(() => {
+    if (funcionarioLogado.isAdmin) {
+      communication.bearerGET(localStorage.token, '/funcionarios')
+        .then(values => {
+          setListaFuncionarios(values.funcionarios);
+        });
+    }
     communication.bearerGET(localStorage.token, '/profile')
       .then((values => {
         setFuncionarioLogado(values);
@@ -120,6 +130,7 @@ export default function Logged() {
             .then(retorno => console.log('ok'));
         });
       });
+
   }, [screenState]);
 
 
@@ -132,6 +143,13 @@ export default function Logged() {
 
   function listarEmprestimos() {
     setScreenState(screenStates.EMPRESTIMOS);
+  }
+  function listarFuncionarios() {
+    setScreenState(screenStates.FUNCIONARIOS);
+  }
+
+  function handleNovoFuncionario() {
+    setScreenState(screenStates.NOVOFUNCIONARIO);
   }
   function novoEmprestimo() {
     setScreenState(screenStates.NOVOEMPRESTIMO);
@@ -155,17 +173,19 @@ export default function Logged() {
       }))
       .then(retorno => console.log(retorno));
   };
-return (
-  <div>
-    <MenuAppBar funcionario={funcionarioLogado} novoEmprestimo={novoEmprestimo} devolucao={devolucao} listarLivros={listarLivros} listarClientes={listarClientes} listarEmprestimos={listarEmprestimos} />
-    <Container maxWidth='md'>
-      {screenState === screenStates.LIVROS && <TabelaLivros listaLivros={listaLivros} handleNovoLivro={handleNovoLivro} setScreenState={setScreenState} screenStates={screenStates}  communication={communication}/>}
-      {screenState === screenStates.CLIENTES && <TabelaClientes listaClientes={listaClientes} handleNovoCliente={handleNovoCliente} setScreenState={setScreenState} screenStates={screenStates} communication={communication} />}
-      {screenState === screenStates.EMPRESTIMOS && <TabelaEmprestimos devolucao={devolucao} listaEmprestimos={emprestimos} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication}/>}
-      {screenState === screenStates.NOVOEMPRESTIMO && <NovoEmprestimo setScreenState={setScreenState} screenStates={screenStates} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication} />}
-      {screenState === screenStates.NOVOLIVRO && <NovoLivro listaLivros={listaLivros} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
-      {screenState === screenStates.NOVOCLIENTE && <NovoCliente listaClientes={listaClientes} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
-    </Container>
-  </div>
-)
+  return (
+    <div>
+      <MenuAppBar funcionario={funcionarioLogado} novoEmprestimo={novoEmprestimo} devolucao={devolucao} listarFuncionarios={listarFuncionarios} listarLivros={listarLivros} listarClientes={listarClientes} listarEmprestimos={listarEmprestimos} />
+      <Container maxWidth='md'>
+        {screenState === screenStates.LIVROS && <TabelaLivros listaLivros={listaLivros} handleNovoLivro={handleNovoLivro} setScreenState={setScreenState} screenStates={screenStates} communication={communication} />}
+        {screenState === screenStates.CLIENTES && <TabelaClientes listaClientes={listaClientes} handleNovoCliente={handleNovoCliente} setScreenState={setScreenState} screenStates={screenStates} communication={communication} />}
+        {screenState === screenStates.EMPRESTIMOS && <TabelaEmprestimos devolucao={devolucao} listaEmprestimos={emprestimos} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication} />}
+        {funcionarioLogado.isAdmin === 1 && screenState === screenStates.FUNCIONARIOS && <TabelaFuncionarios listaFuncionarios={listaFuncionarios} handleNovoFuncionario={handleNovoFuncionario} setScreenState={setScreenState} screenStates={screenStates} communication={communication} />}
+        {screenState === screenStates.NOVOEMPRESTIMO && <NovoEmprestimo setScreenState={setScreenState} screenStates={screenStates} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication} />}
+        {screenState === screenStates.NOVOLIVRO && <NovoLivro listaLivros={listaLivros} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
+        {screenState === screenStates.NOVOCLIENTE && <NovoCliente listaClientes={listaClientes} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
+        {funcionarioLogado.isAdmin === 1 && screenState === screenStates.NOVOFUNCIONARIO && <NovoFun listaFuncionarios={listaFuncionarios} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
+      </Container>
+    </div>
+  )
 }

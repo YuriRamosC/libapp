@@ -7,28 +7,18 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 import TextField from '@material-ui/core/TextField';
-export default function AlterarCliente({ cliente, listaClientes, communication }) {
+export default function AlterarFuncionario({ funcionario, listaFuncionarios, communication }) {
     const [open, setOpen] = React.useState(false);
-    const [newNome, setNewNome] = React.useState(cliente.nome);
-    const [newCpf, setNewCpf] = React.useState(cliente.cpf);
-    const [newEmail, setNewEmail] = React.useState(cliente.email);
-    const [newTelefone, setNewTelefone] = React.useState(cliente.telefone);
-    const [newEndereco, setNewEndereco] = React.useState(cliente.endereco);
+    const [newNome, setNewNome] = React.useState(funcionario.nome);
+    const [newEmail, setNewEmail] = React.useState(funcionario.email);
+    const [newPassword, setNewPassword] = React.useState(funcionario.password);
+    const [newIsAdmin, setNewIsAdmin] = React.useState(funcionario.isAdmin);
     const [erros, setErros] = React.useState({
-        email: { valid: true, text: '' },
-        cpf: { valid: true, text: '' }
+        email: { valid: true, text: '' }
     });
-    function validarCPF(cpf, id) {
-        if (listaClientes.filter(obj => obj.cpf === cpf && obj.id != id).length > 0) {
-            return { valid: false, text: 'Ja existe um cliente com esse CPF' }
-        }
-        else {
-            return { valid: true, text: '' }
-        };
-    }
     function validarEmail(email, id) {
-        if (listaClientes.filter(obj => obj.email === email && obj.id != id).length > 0) {
-            return { valid: false, text: 'Ja existe um cliente com esse email' }
+        if (listaFuncionarios.filter(obj => obj.email === email && obj.id != id).length > 0) {
+            return { valid: false, text: 'Ja existe um funcionario com esse email' }
         }
         else {
 
@@ -37,19 +27,16 @@ export default function AlterarCliente({ cliente, listaClientes, communication }
     }
     const handleNome = (event) => {
         setNewNome(event.target.value);
-    }
-    const handleCpf = (event) => {
-        setNewCpf(event.target.value);
-    }
-    const handleEmail = (event) => {
+      }
+      const handleEmail = (event) => {
         setNewEmail(event.target.value);
-    }
-    const handleTelefone = (event) => {
-        setNewTelefone(event.target.value);
-    }
-    const handleEndereco = (event) => {
-        setNewEndereco(event.target.value);
-    }
+      }
+      const handlePassword = (event) => {
+        setNewPassword(event.target.value);
+      }
+      const handleIsAdmin = (event) => {
+        setNewIsAdmin(event.target.value);
+      }
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -61,11 +48,9 @@ export default function AlterarCliente({ cliente, listaClientes, communication }
         setOpen(false);
     }
     const Aceitar = () => {
-        console.log('Email: ' + erros.email.valid);
-        console.log('CPF: ' + erros.cpf.valid);
-        if (erros.email.valid && erros.cpf.valid) {
-            communication.bearerPOST(localStorage.token, '/clientesUpdate',
-                JSON.stringify({ id: cliente.id, nome: newNome, cpf: newCpf, email: newEmail, telefone: newTelefone, endereco: newEndereco, multa: cliente.multa }))
+        if (erros.email.valid) {
+            communication.bearerPOST(localStorage.token, '/funcionariosUpdate',
+                JSON.stringify({ id: funcionario.id, nome: newNome, email: newEmail, password: newPassword, isAdmin: newIsAdmin }))
                 .then((retorno) => {
                     setOpen(false);
                 });
@@ -77,10 +62,10 @@ export default function AlterarCliente({ cliente, listaClientes, communication }
                 <EditIcon color="action" />
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-                <DialogTitle id="alert-dialog-title">{`Alterar ${cliente.nome}`}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{`Alterar ${funcionario.nome}`}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Ficha do cliente
+                        Ficha do funcionario
                     </DialogContentText>
                     <TextField
                         id='nome'
@@ -106,7 +91,7 @@ export default function AlterarCliente({ cliente, listaClientes, communication }
                         onChange={handleEmail}
                         fullWidth
                         onBlur={(event) => {
-                            setErros({ ...erros, email: validarEmail(newEmail, cliente.id) });
+                            setErros({ ...erros, email: validarEmail(newEmail, funcionario.id) });
                         }}
                         helperText={erros.email.text}
                         error={!erros.email.valid}
@@ -116,32 +101,27 @@ export default function AlterarCliente({ cliente, listaClientes, communication }
                         }}
                     />
                     <TextField
-                        id='cpf'
-                        label='CPF'
-                        value={newCpf}
+                        id='password'
+                        label='Senha'
+                        value={newPassword}
                         variant="outlined"
                         margin='normal'
                         autoFocus
-                        onChange={handleCpf}
+                        onChange={handlePassword}
                         fullWidth
-                        onBlur={(event) => {
-                            setErros({ ...erros, email: validarCPF(newCpf, cliente.id) });
-                        }}
-                        helperText={erros.cpf.text}
-                        error={!erros.cpf.valid}
                         style={{ width: 300 }}
                         InputLabelProps={{
                             shrink: true,
                         }}
                     />
                     <TextField
-                        id='endereco'
-                        label='Endereço'
-                        value={newEndereco}
+                        id='isAdmin'
+                        label='Permissão de Admin'
+                        value={newIsAdmin}
                         variant="outlined"
                         margin='normal'
                         autoFocus
-                        onChange={handleEndereco}
+                        onChange={handleIsAdmin}
                         fullWidth
                         style={{ width: 300 }}
                         InputLabelProps={{
