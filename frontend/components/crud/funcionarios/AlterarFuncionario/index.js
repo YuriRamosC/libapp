@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 import TextField from '@material-ui/core/TextField';
-export default function AlterarFuncionario({ funcionario, listaFuncionarios, communication }) {
+export default function AlterarFuncionario({ funcionario, listaFuncionarios, communication, atualizarDados }) {
     const [open, setOpen] = React.useState(false);
     const [newNome, setNewNome] = React.useState(funcionario.nome);
     const [newEmail, setNewEmail] = React.useState(funcionario.email);
@@ -54,6 +54,7 @@ export default function AlterarFuncionario({ funcionario, listaFuncionarios, com
                 .then((retorno) => {
                     setOpen(false);
                 });
+                atualizarDados();
         }
     }
     return (

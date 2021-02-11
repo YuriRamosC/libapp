@@ -36,7 +36,7 @@ const StyledTableCell = withStyles((theme) => ({
       margin: theme.spacing(3, 0, 2),
     },
   }));
-export default function TabelaLivros({ listaLivros, handleNovoLivro, setScreenState, screenStates, communication }) {
+export default function TabelaLivros({ listaLivros, handleNovoLivro, setScreenState, screenStates, communication, atualizarDados }) {
     const classes = stylesBase();
     return (
       <div align='center'>
@@ -58,10 +58,10 @@ export default function TabelaLivros({ listaLivros, handleNovoLivro, setScreenSt
                 return (
                   <TableRow key={`livro_${index}`}>
                     <StyledTableCell padding='checkbox'>
-                    <AlterarLivro livro={livro} listaLivros={listaLivros} communication={communication}/>
+                    <AlterarLivro livro={livro} listaLivros={listaLivros} communication={communication} atualizarDados={atualizarDados}/>
                     </StyledTableCell>
                     <StyledTableCell padding='checkbox'>
-                    <DeletarLivro livro={livro} communication={communication}/>
+                    <DeletarLivro livro={livro} communication={communication} atualizarDados={atualizarDados}/>
                     </StyledTableCell>
                     <TableCell>{livro.isbn}</TableCell>
                     <TableCell >{livro.nome}</TableCell >

@@ -74,6 +74,7 @@ export default function NovoCliente({ listaClientes, communication, setScreenSta
       JSON.stringify({ nome: nome, cpf: cpf, email: email, telefone: telefone, endereco: endereco, multa: 0 }))
       .then((retorno) => {
         setScreenState(screenStates.CLIENTES);
+        atualizarDados();
       })
   }
   return (

@@ -41,6 +41,12 @@ module.exports = app => {
         });
     });
     app.post('/funcionarios', (req, res) => {
+        console.log(req.body);
+        if(req.body.isAdmin === false) {
+            req.body.isAdmin = 0;
+        } else {
+            req.body.isAdmin = 1;
+        }
         const funcionario = req.body
 
         Funcionario.adiciona(funcionario, res, (result) => {

@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 import TextField from '@material-ui/core/TextField';
-export default function AlterarCliente({ livro, listaLivros, communication }) {
+export default function AlterarCliente({ livro, listaLivros, communication, atualizarDados }) {
     const [open, setOpen] = React.useState(false);
     const [newNome, setNewNome] = React.useState(livro.nome);
     const [newAutor, setNewAutor] = React.useState(livro.autor);
@@ -57,6 +57,7 @@ export default function AlterarCliente({ livro, listaLivros, communication }) {
                 .then((retorno) => {
                     setOpen(false);
                 });
+                atualizarDados();
         }
     }
     return (

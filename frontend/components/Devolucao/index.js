@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function Devolucao({devolucao, emprestimo}) {
+export default function Devolucao({devolucao, emprestimo, atualizarDados}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -21,6 +21,7 @@ export default function Devolucao({devolucao, emprestimo}) {
   }
   const Aceitar = () => {
     devolucao(emprestimo);
+    atualizarDados();
     setOpen(false);
   }
   return (

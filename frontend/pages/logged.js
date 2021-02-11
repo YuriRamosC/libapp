@@ -65,6 +65,7 @@ export default function Logged() {
   const [listaClientes, setListaClientes] = React.useState([]);
   const [emprestimos, setEmprestimos] = React.useState([]);
   const communication = new Comunicacao();
+  const [dadosAtualizados, setDadosAtualizados] = React.useState(0);
   useEffect(() => {
     if (funcionarioLogado.isAdmin) {
       communication.bearerGET(localStorage.token, '/funcionarios')
@@ -131,9 +132,11 @@ export default function Logged() {
         });
       });
 
-  }, [screenState]);
+  }, [screenState, dadosAtualizados]);
 
-
+  function atualizarDados() {
+    setDadosAtualizados(dadosAtualizados+1);
+  }
   function listarLivros() {
     setScreenState(screenStates.LIVROS);
   }
@@ -177,14 +180,14 @@ export default function Logged() {
     <div>
       <MenuAppBar funcionario={funcionarioLogado} novoEmprestimo={novoEmprestimo} devolucao={devolucao} listarFuncionarios={listarFuncionarios} listarLivros={listarLivros} listarClientes={listarClientes} listarEmprestimos={listarEmprestimos} />
       <Container maxWidth='md'>
-        {screenState === screenStates.LIVROS && <TabelaLivros listaLivros={listaLivros} handleNovoLivro={handleNovoLivro} setScreenState={setScreenState} screenStates={screenStates} communication={communication} />}
-        {screenState === screenStates.CLIENTES && <TabelaClientes listaClientes={listaClientes} handleNovoCliente={handleNovoCliente} setScreenState={setScreenState} screenStates={screenStates} communication={communication} />}
-        {screenState === screenStates.EMPRESTIMOS && <TabelaEmprestimos devolucao={devolucao} listaEmprestimos={emprestimos} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication} />}
-        {funcionarioLogado.isAdmin === 1 && screenState === screenStates.FUNCIONARIOS && <TabelaFuncionarios listaFuncionarios={listaFuncionarios} handleNovoFuncionario={handleNovoFuncionario} setScreenState={setScreenState} screenStates={screenStates} communication={communication} />}
-        {screenState === screenStates.NOVOEMPRESTIMO && <NovoEmprestimo setScreenState={setScreenState} screenStates={screenStates} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication} />}
-        {screenState === screenStates.NOVOLIVRO && <NovoLivro listaLivros={listaLivros} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
-        {screenState === screenStates.NOVOCLIENTE && <NovoCliente listaClientes={listaClientes} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
-        {funcionarioLogado.isAdmin === 1 && screenState === screenStates.NOVOFUNCIONARIO && <NovoFun listaFuncionarios={listaFuncionarios} communication={communication} setScreenState={setScreenState} screenStates={screenStates} />}
+        {screenState === screenStates.LIVROS && <TabelaLivros listaLivros={listaLivros} handleNovoLivro={handleNovoLivro} setScreenState={setScreenState} screenStates={screenStates} communication={communication} atualizarDados={atualizarDados}/>}
+        {screenState === screenStates.CLIENTES && <TabelaClientes listaClientes={listaClientes} handleNovoCliente={handleNovoCliente} setScreenState={setScreenState} screenStates={screenStates} communication={communication} atualizarDados={atualizarDados}/>}
+        {screenState === screenStates.EMPRESTIMOS && <TabelaEmprestimos devolucao={devolucao} listaEmprestimos={emprestimos} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication} atualizarDados={atualizarDados}/>}
+        {funcionarioLogado.isAdmin === 1 && screenState === screenStates.FUNCIONARIOS && <TabelaFuncionarios listaFuncionarios={listaFuncionarios} handleNovoFuncionario={handleNovoFuncionario} setScreenState={setScreenState} screenStates={screenStates} communication={communication} atualizarDados={atualizarDados}/>}
+        {screenState === screenStates.NOVOEMPRESTIMO && <NovoEmprestimo setScreenState={setScreenState} screenStates={screenStates} listaClientes={listaClientes} listaLivros={listaLivros} communication={communication} atualizarDados={atualizarDados}/>}
+        {screenState === screenStates.NOVOLIVRO && <NovoLivro listaLivros={listaLivros} communication={communication} setScreenState={setScreenState} screenStates={screenStates} atualizarDados={atualizarDados} />}
+        {screenState === screenStates.NOVOCLIENTE &&<NovoCliente listaClientes={listaClientes} communication={communication} setScreenState={setScreenState} screenStates={screenStates} atualizarDados={atualizarDados} />}
+        {funcionarioLogado.isAdmin === 1 && screenState === screenStates.NOVOFUNCIONARIO && <NovoFuncionario listaFuncionarios={listaFuncionarios} communication={communication} setScreenState={setScreenState} screenStates={screenStates} atualizarDados={atualizarDados}/>}
       </Container>
     </div>
   )

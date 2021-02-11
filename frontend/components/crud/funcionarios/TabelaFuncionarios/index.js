@@ -37,7 +37,7 @@ const stylesBase = makeStyles((theme) => ({
         margin: theme.spacing(3, 0, 2),
     },
 }));
-export default function TabelaFuncionarios({ listaFuncionarios, handleNovoFuncionario, setScreenState, screenStates, communication }) {
+export default function TabelaFuncionarios({ listaFuncionarios, handleNovoFuncionario, setScreenState, screenStates, communication, atualizarDados }) {
     const classes = stylesBase();
     return (
         <div align='center'>
@@ -59,10 +59,10 @@ export default function TabelaFuncionarios({ listaFuncionarios, handleNovoFuncio
                             return (
                                 <TableRow key={`funcionario_${index}`}>
                                     <StyledTableCell align="center" padding='checkbox'>
-                                        <AlterarFuncionario funcionario={funcionario} listaFuncionarios={listaFuncionarios} communication={communication}/>
+                                        <AlterarFuncionario funcionario={funcionario} listaFuncionarios={listaFuncionarios} communication={communication} atualizarDados={atualizarDados}/>
                                     </StyledTableCell>
                                     <StyledTableCell align="center" padding='checkbox'>
-                                    <DeletarFuncionario funcionario={funcionario} communication={communication}/>
+                                    <DeletarFuncionario funcionario={funcionario} communication={communication}  atualizarDados={atualizarDados}/>
                                     </StyledTableCell>
                                     <TableCell >{funcionario.nome}</TableCell >
                                     <TableCell align="right">{funcionario.email}</TableCell>

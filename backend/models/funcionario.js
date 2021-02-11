@@ -19,17 +19,16 @@ class Funcionario {
             res.status(404).send();
         }
     }
-    adiciona(funcionario, res) {
+    adiciona(funcionario, res, callback) {
 
         const sql = 'INSERT INTO funcionario SET ?'
 
         conexao.query(sql, funcionario, (erro, resultados) => {
-            if (erro.sqlMessage == '23000') {
-
-            } else if (erro) {
-            }
+            if (erro) {
+                callback(erro);
+            } 
             else {
-                res.status(201).json(funcionario);
+                callback(resultados);
             }
         })
 

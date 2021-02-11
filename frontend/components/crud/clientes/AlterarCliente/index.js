@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 import TextField from '@material-ui/core/TextField';
-export default function AlterarCliente({ cliente, listaClientes, communication }) {
+export default function AlterarCliente({ cliente, listaClientes, communication, atualizarDados }) {
     const [open, setOpen] = React.useState(false);
     const [newNome, setNewNome] = React.useState(cliente.nome);
     const [newCpf, setNewCpf] = React.useState(cliente.cpf);
@@ -69,6 +69,7 @@ export default function AlterarCliente({ cliente, listaClientes, communication }
                 .then((retorno) => {
                     setOpen(false);
                 });
+                atualizarDados();
         }
     }
     return (

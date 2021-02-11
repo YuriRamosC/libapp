@@ -37,7 +37,7 @@ const stylesBase = makeStyles((theme) => ({
         margin: theme.spacing(3, 0, 2),
     },
 }));
-export default function TabelaClientes({ listaClientes, handleNovoCliente, setScreenState, screenStates, communication }) {
+export default function TabelaClientes({ listaClientes, handleNovoCliente, setScreenState, screenStates, communication, atualizarDados }) {
     const classes = stylesBase();
     return (
         <div align='center'>
@@ -60,10 +60,10 @@ export default function TabelaClientes({ listaClientes, handleNovoCliente, setSc
                             return (
                                 <TableRow key={`cliente_${index}`}>
                                     <StyledTableCell align="center" padding='checkbox'>
-                                        <AlterarCliente cliente={cliente} listaClientes={listaClientes} communication={communication}/>
+                                        <AlterarCliente cliente={cliente} listaClientes={listaClientes} communication={communication} atualizarDados={atualizarDados}/>
                                     </StyledTableCell>
                                     <StyledTableCell align="center" padding='checkbox'>
-                                    <DeletarCliente cliente={cliente} communication={communication}/>
+                                    <DeletarCliente cliente={cliente} communication={communication}  atualizarDados={atualizarDados}/>
                                     </StyledTableCell>
                                     <TableCell >{cliente.nome}</TableCell >
                                     <TableCell align="right">{cliente.cpf}</TableCell >

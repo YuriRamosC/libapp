@@ -37,7 +37,7 @@ const StyledTableCell = withStyles((theme) => ({
       margin: theme.spacing(3, 0, 2),
     },
   }));
-export default function TabelaEmprestimos({ listaEmprestimos, listaClientes, listaLivros, devolucao, communication }) {
+export default function TabelaEmprestimos({ listaEmprestimos, listaClientes, listaLivros, devolucao, communication, atualizarDados}) {
     return (
       <TableContainer component={Paper} style={{ align: 'center' }} size='medium'>
         <Table stickyHeader size='medium' aria-label='a dense table'>
@@ -57,10 +57,10 @@ export default function TabelaEmprestimos({ listaEmprestimos, listaClientes, lis
               return (
                 <TableRow key={`emprestimo_${index}`}>
                   <StyledTableCell align='center' padding='checkbox'>
-                    <DeletarEmprestimo emprestimo={emprestimo} communication={communication} />
+                    <DeletarEmprestimo emprestimo={emprestimo} communication={communication}  atualizarDados={atualizarDados}/>
                   </StyledTableCell>
                   {emprestimo.devolvido === 1 && <StyledTableCell>Devolvido</StyledTableCell>}
-                  {emprestimo.devolvido === 0 && <StyledTableCell><Devolucao devolucao={devolucao} emprestimo={emprestimo}/></StyledTableCell>}
+                  {emprestimo.devolvido === 0 && <StyledTableCell><Devolucao devolucao={devolucao} emprestimo={emprestimo} atualizarDados={atualizarDados}/></StyledTableCell>}
                   <TableCell align='center'>{listaClientes.find((obj) => { return obj.id === emprestimo.cliente_id }).nome}</TableCell>
                   <TableCell>{listaClientes.find((obj) => { return obj.id === emprestimo.cliente_id }).email}</TableCell>
                   <TableCell>{listaLivros.find((obj) => { return obj.id === emprestimo.livro_id }).nome}</TableCell>
